@@ -1,3 +1,16 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.0" # o fija la versión que uses en tu org
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+
 locals {
 
   ############################################
