@@ -54,6 +54,11 @@ variable "subscriptionid" {
   type        = string
 }
 
+variable "tenantid" {
+  description = "Tenant ID destino."
+  type        = string
+}
+
 variable "inherit" {
   description = "Si true, hereda tags del Resource Group y los mezcla con standard + custom."
   type        = bool
