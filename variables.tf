@@ -110,6 +110,11 @@ variable "akv_name" {
   }
 }
 
+variable "key_vault_id" {  
+  description = "El ID del Key Vault donde se almacena la clave"  
+  type        = string  
+} 
+
 variable "key_name" {
   description = "Nombre de la Key en el Key Vault (solo si CMK aplica)."
   type        = string
