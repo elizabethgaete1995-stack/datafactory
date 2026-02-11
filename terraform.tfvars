@@ -44,6 +44,7 @@ key_exist          = false
 key_custom_enabled = true
 key_name           = "cl-adf-dev-key"
 akv_name           = "akvchilecentralakvdev001"
+key_vault_id       = "/subscriptions/ef0a94be-5750-4ef8-944b-1bbc0cdda800/resourceGroups/rg-poc-test-001/providers/Microsoft.KeyVault/vaults/akvchilecentralakvdev001"
 uai_name           = "cl-uai-adf-dev-01"
 inherit            = true
 
@@ -74,3 +75,4 @@ custom_tags = {
   compliance     = "internal"
 
 }
+
