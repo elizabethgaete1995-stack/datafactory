@@ -100,7 +100,7 @@ data "azurerm_log_analytics_workspace" "lwk_principal" {
 
 # Create and configure a Key
 resource "azurerm_key_vault_key" "key_generate" {
-  count      = (!var.key_exist && local.key_cmk) ? 1 : 0
+  #count      = (!var.key_exist && local.key_cmk) ? 1 : 0
   depends_on = [data.azurerm_key_vault.akv_principal]
 
   name         = var.key_name
