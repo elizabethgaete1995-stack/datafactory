@@ -80,7 +80,7 @@ data "azurerm_client_config" "current" {}
 data "azurerm_resource_group" "rsg_principal" {
   name = var.rsg_name
 }
-
+/*
 # Get and set a key vault.
 data "azurerm_key_vault" "akv_principal" {
   count      = local.key_cmk ? 1 : 0
@@ -89,6 +89,45 @@ data "azurerm_key_vault" "akv_principal" {
   name                = var.akv_name
   resource_group_name = data.azurerm_resource_group.rsg_principal.name
 }
+*/
+# Get and set a key vault.  
+data "azurerm_key_vault" "akv_principal" {    
+  count      = local.key_cmk ? 1 : 0    
+  depends_on = [data.azurerm_resource_group.rsg_principal]  
+  name                = var.akv_name  
+  #key_vault_id = var.key_vault_id  
+  resource_group_name = data.azurerm_resource_group.rsg_principal.name  
+}
+
+resource "azurerm_key_vault_access_policy" "deployer" {
+  key_vault_id = var.key_vault_id
+  tenant_id    = var.tenantid
+  object_id    = data.azurerm_client_config.current.object_id
+
+   key_permissions = [
+    "Create", "Get", "Delete", "Purge", "GetRotationPolicy", "Recover", "List"
+  ]
+}
+
+# Crear la clave en el Key Vault 
+resource "azurerm_key_vault_key" "key_generate" {
+  name         = var.key_name 
+  key_vault_id = var.key_vault_id
+  key_type     = "RSA"
+  key_size     = 2048
+ key_opts = [
+    "decrypt",
+    "encrypt",
+    "sign",
+    "unwrapKey",
+    "verify",
+    "wrapKey",
+  ]
+  depends_on = [
+    azurerm_key_vault_access_policy.deployer
+  ]
+}
+
 
 # Get and set a monitor diagnostic settings
 data "azurerm_log_analytics_workspace" "lwk_principal" {
@@ -97,7 +136,7 @@ data "azurerm_log_analytics_workspace" "lwk_principal" {
   name                = var.lwk_name
   resource_group_name = var.lwk_rsg_name
 }
-
+/*
 # Create and configure a Key
 resource "azurerm_key_vault_key" "key_generate" {
   #count      = (!var.key_exist && local.key_cmk) ? 1 : 0
@@ -119,7 +158,7 @@ resource "azurerm_key_vault_key" "key_generate" {
     "wrapKey",
   ]
 }
-
+*/
 data "azurerm_key_vault_key" "key_principal" {
   count      = local.key_cmk ? 1 : 0
   depends_on = [azurerm_key_vault_key.key_generate]
